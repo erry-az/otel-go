@@ -12,7 +12,7 @@ import (
 	"os"
 	"time"
 
-	generaOtel "github.com/erry-az/otel-go"
+	otelprovider "github.com/erry-az/otel-go"
 	"github.com/erry-az/otel-go/example/otelgrpc/api"
 	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 	"go.opentelemetry.io/otel"
@@ -32,7 +32,7 @@ func main() {
 		grpcAddress = defaultServerAddress
 	}
 
-	tp, err := generaOtel.NewProviders(context.Background())
+	tp, err := otelprovider.NewProviders(context.Background())
 	if err != nil {
 		log.Fatal(err)
 	}

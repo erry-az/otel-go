@@ -2,11 +2,12 @@ package main
 
 import (
 	"context"
-	"github.com/erry-az/otel-go/example/otelgrpc/server/app"
 	"log"
 	"os"
 	"os/signal"
 	"syscall"
+
+	"github.com/erry-az/otel-go/example/otelgrpc/server/app"
 )
 
 func main() {

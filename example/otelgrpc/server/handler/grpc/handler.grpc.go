@@ -4,13 +4,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"io"
+	"log"
+	"time"
+
 	"github.com/erry-az/otel-go/example/otelgrpc/api"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
-	"io"
-	"log"
-	"time"
 )
 
 var tracer = otel.Tracer("grpc-example-server")

@@ -2,16 +2,17 @@ package app
 
 import (
 	"context"
+	"log"
+	"net"
+	"os"
+	"time"
+
 	"github.com/erry-az/otel-go"
 	"github.com/erry-az/otel-go/example/otelgrpc/api"
 	handlerGrpc "github.com/erry-az/otel-go/example/otelgrpc/server/handler/grpc"
 	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
-	"log"
-	"net"
-	"os"
-	"time"
 )
 
 const (
