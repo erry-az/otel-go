@@ -2,8 +2,6 @@ package otel
 
 import (
 	"context"
-	"errors"
-
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc"
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp"
@@ -13,26 +11,11 @@ import (
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
 )
 
-// TraceExporterType endpoint type for OTLP exporter
-type TraceExporterType string
-
-const (
-	// GrpcTraceExporter exporter grpc type
-	GrpcTraceExporter TraceExporterType = "grpc"
-	// HttpTraceExporter exporter http type
-	HttpTraceExporter TraceExporterType = "http"
-	// StdOutTraceExporter exporter stdout type
-	StdOutTraceExporter TraceExporterType = "stdout"
-)
-
 // TraceExporterOption option for trace exporter
 type TraceExporterOption struct {
 	GrpcOpts []otlptracegrpc.Option
 	HttpOpts []otlptracehttp.Option
 }
-
-// ErrInvalidTraceExporterType invalid metric exporter type error
-var ErrInvalidTraceExporterType = errors.New("invalid metric exporter type")
 
 // NewTraceExporter new trace exporter with defined type
 // for grpc and http there is env will be provided

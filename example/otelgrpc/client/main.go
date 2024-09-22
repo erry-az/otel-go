@@ -7,13 +7,13 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	api2 "github.com/erry-az/otel-go/example/otelgrpc/api"
 	"io"
 	"log"
 	"os"
 	"time"
 
 	generaOtel "github.com/erry-az/otel-go"
+	"github.com/erry-az/otel-go/example/otelgrpc/api"
 	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
 	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/attribute"
@@ -51,7 +51,7 @@ func main() {
 	}
 	defer func() { _ = conn.Close() }()
 
-	c := api2.NewHelloServiceClient(conn)
+	c := api.NewHelloServiceClient(conn)
 
 	if err := callSayHello(c); err != nil {
 		log.Fatal(err)
@@ -69,7 +69,7 @@ func main() {
 	time.Sleep(10 * time.Millisecond)
 }
 
-func callSayHello(c api2.HelloServiceClient) error {
+func callSayHello(c api.HelloServiceClient) error {
 	md := metadata.Pairs(
 		"timestamp", time.Now().Format(time.StampNano),
 		"client-id", "web-api-client-us-east-1",
@@ -82,7 +82,7 @@ func callSayHello(c api2.HelloServiceClient) error {
 	defer span.End()
 
 	span.SetAttributes(attribute.String("greeting", "World"))
-	response, err := c.SayHello(ctx, &api2.HelloRequest{Greeting: "World"})
+	response, err := c.SayHello(ctx, &api.HelloRequest{Greeting: "World"})
 	if err != nil {
 		span.RecordError(err)
 		return fmt.Errorf("calling SayHello: %w", err)
@@ -91,7 +91,7 @@ func callSayHello(c api2.HelloServiceClient) error {
 	return nil
 }
 
-func callSayHelloClientStream(c api2.HelloServiceClient) error {
+func callSayHelloClientStream(c api.HelloServiceClient) error {
 	md := metadata.Pairs(
 		"timestamp", time.Now().Format(time.StampNano),
 		"client-id", "web-api-client-us-east-1",
@@ -105,7 +105,7 @@ func callSayHelloClientStream(c api2.HelloServiceClient) error {
 	}
 
 	for i := 0; i < 5; i++ {
-		err := stream.Send(&api2.HelloRequest{Greeting: "World"})
+		err := stream.Send(&api.HelloRequest{Greeting: "World"})
 
 		time.Sleep(time.Duration(i*50) * time.Millisecond)
 
@@ -123,7 +123,7 @@ func callSayHelloClientStream(c api2.HelloServiceClient) error {
 	return nil
 }
 
-func callSayHelloServerStream(c api2.HelloServiceClient) error {
+func callSayHelloServerStream(c api.HelloServiceClient) error {
 	md := metadata.Pairs(
 		"timestamp", time.Now().Format(time.StampNano),
 		"client-id", "web-api-client-us-east-1",
@@ -131,7 +131,7 @@ func callSayHelloServerStream(c api2.HelloServiceClient) error {
 	)
 
 	ctx := metadata.NewOutgoingContext(context.Background(), md)
-	stream, err := c.SayHelloServerStream(ctx, &api2.HelloRequest{Greeting: "World"})
+	stream, err := c.SayHelloServerStream(ctx, &api.HelloRequest{Greeting: "World"})
 	if err != nil {
 		return fmt.Errorf("opening SayHelloServerStream: %w", err)
 	}
@@ -150,7 +150,7 @@ func callSayHelloServerStream(c api2.HelloServiceClient) error {
 	return nil
 }
 
-func callSayHelloBidiStream(c api2.HelloServiceClient) error {
+func callSayHelloBidiStream(c api.HelloServiceClient) error {
 	md := metadata.Pairs(
 		"timestamp", time.Now().Format(time.StampNano),
 		"client-id", "web-api-client-us-east-1",
@@ -168,7 +168,7 @@ func callSayHelloBidiStream(c api2.HelloServiceClient) error {
 
 	go func() {
 		for i := 0; i < 5; i++ {
-			err := stream.Send(&api2.HelloRequest{Greeting: "World"})
+			err := stream.Send(&api.HelloRequest{Greeting: "World"})
 			if err != nil {
 				// nolint: revive  // This acts as its own main func.
 				log.Fatalf("Error when sending to SayHelloBidiStream: %s", err)
