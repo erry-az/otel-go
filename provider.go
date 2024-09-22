@@ -15,25 +15,6 @@ type Providers struct {
 	LogProvider    *sdklog.LoggerProvider
 }
 
-// Shutdown turn of trace and metric
-func (o *Providers) Shutdown(ctx context.Context) error {
-	if o.TraceProvider != nil {
-		err := o.TraceProvider.Shutdown(ctx)
-		if err != nil {
-			return err
-		}
-	}
-
-	if o.MetricProvider != nil {
-		err := o.MetricProvider.Shutdown(ctx)
-		if err != nil {
-			return err
-		}
-	}
-
-	return nil
-}
-
 // NewProviders init Open Telemetry config
 func NewProviders(ctx context.Context) (*Providers, error) {
 	var providers Providers
@@ -85,4 +66,30 @@ func NewProviders(ctx context.Context) (*Providers, error) {
 	}
 
 	return &providers, nil
+}
+
+// Shutdown turn of trace and metric
+func (o *Providers) Shutdown(ctx context.Context) error {
+	if o.TraceProvider != nil {
+		err := o.TraceProvider.Shutdown(ctx)
+		if err != nil {
+			return err
+		}
+	}
+
+	if o.MetricProvider != nil {
+		err := o.MetricProvider.Shutdown(ctx)
+		if err != nil {
+			return err
+		}
+	}
+
+	if o.LogProvider != nil {
+		err := o.LogProvider.Shutdown(ctx)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
